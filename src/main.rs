@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[derive(Debug)]
 struct Opcode {
     instruction : fn(),
     addressing_mode : fn(),
@@ -21,6 +22,140 @@ fn gen_opcodes() -> HashMap<u16, Opcode> {
                                 addressing_mode : CPU::INDX,
                                 cycles : 2,
                                 size : 6});
+    opcodes.insert(0x06, Opcode{instruction : CPU::ASL,
+                                addressing_mode : CPU::ZP,
+                                cycles : 2,
+                                size : 5});
+    opcodes.insert(0x08, Opcode{instruction : CPU::PHP,
+                                addressing_mode : CPU::Implied,
+                                cycles : 1,
+                                size : 3});
+    opcodes.insert(0x09, Opcode{instruction : CPU::ORA,
+                                addressing_mode : CPU::IMM,
+                                cycles : 2,
+                                size : 2});
+    opcodes.insert(0x0A, Opcode{instruction : CPU::ASL,
+                                addressing_mode : CPU::Accum,
+                                cycles : 1,
+                                size : 2});
+    opcodes.insert(0x0D, Opcode{instruction : CPU::ORA,
+                                addressing_mode : CPU::ABS,
+                                cycles : 3,
+                                size : 4});
+    opcodes.insert(0x0E, Opcode{instruction : CPU::ASL,
+                                addressing_mode : CPU::ABS,
+                                cycles : 3,
+                                size : 6});
+    opcodes.insert(0x10, Opcode{instruction : CPU::BPL,
+                                addressing_mode : CPU::Relative,
+                                cycles : 2,
+                                size : 2});
+    opcodes.insert(0x11, Opcode{instruction : CPU::ORA,
+                                addressing_mode : CPU::INDY,
+                                cycles : 2,
+                                size : 5});
+    opcodes.insert(0x15, Opcode{instruction : CPU::ORA,
+                                addressing_mode : CPU::ZPX,
+                                cycles : 2,
+                                size : 4});
+    opcodes.insert(0x17, Opcode{instruction : CPU::ASL,
+                                addressing_mode : CPU::ZPX,
+                                cycles : 2,
+                                size : 6});
+    opcodes.insert(0x18, Opcode{instruction : CPU::CLC,
+                                addressing_mode : CPU::Implied,
+                                cycles : 1,
+                                size : 2});
+    opcodes.insert(0x19, Opcode{instruction : CPU::ORA,
+                                addressing_mode : CPU::ABSY,
+                                cycles : 3,
+                                size : 4});
+    opcodes.insert(0x1D, Opcode{instruction : CPU::ORA,
+                                addressing_mode : CPU::ABSX,
+                                cycles : 3,
+                                size : 4});
+    opcodes.insert(0x1E, Opcode{instruction : CPU::ASL,
+                                addressing_mode : CPU::ABSX,
+                                cycles : 3,
+                                size : 7});
+    opcodes.insert(0x20, Opcode{instruction : CPU::JSR,
+                                addressing_mode : CPU::ABS,
+                                cycles : 3,
+                                size : 6});
+    opcodes.insert(0x21, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::INDX,
+                                cycles : 2,
+                                size : 6});
+    opcodes.insert(0x24, Opcode{instruction : CPU::BIT,
+                                addressing_mode : CPU::ZP,
+                                cycles : 2,
+                                size : 3});
+    opcodes.insert(0x25, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::ZP,
+                                cycles : 2,
+                                size : 3});
+    opcodes.insert(0x26, Opcode{instruction : CPU::ROL,
+                                addressing_mode : CPU::ZP,
+                                cycles : 2,
+                                size : 5});
+    opcodes.insert(0x28, Opcode{instruction : CPU::PLP,
+                                addressing_mode : CPU::Implied,
+                                cycles : 1,
+                                size : 4});
+    opcodes.insert(0x29, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::IMM,
+                                cycles : 2,
+                                size : 2});
+    opcodes.insert(0x2A, Opcode{instruction : CPU::ROL,
+                                addressing_mode : CPU::Accum,
+                                cycles : 1,
+                                size : 2});
+    opcodes.insert(0x2C, Opcode{instruction : CPU::BIT,
+                                addressing_mode : CPU::ABS,
+                                cycles : 3,
+                                size : 4});
+    opcodes.insert(0x2D, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::ABS,
+                                cycles : 3,
+                                size : 4});
+    opcodes.insert(0x2D, Opcode{instruction : CPU::ROL,
+                                addressing_mode : CPU::ABS,
+                                cycles : 3,
+                                size : 6});
+    opcodes.insert(0x30, Opcode{instruction : CPU::BMI,
+                                addressing_mode : CPU::Relative,
+                                cycles : 2,
+                                size : 2});
+    opcodes.insert(0x31, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::INDY,
+                                cycles : 2,
+                                size : 5});
+    opcodes.insert(0x35, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::ZPX,
+                                cycles : 2,
+                                size : 4});
+    opcodes.insert(0x36, Opcode{instruction : CPU::ROL,
+                                addressing_mode : CPU::ZPX,
+                                cycles : 2,
+                                size : 6});
+    opcodes.insert(0x38, Opcode{instruction : CPU::SEC,
+                                addressing_mode : CPU::Implied,
+                                cycles : 1,
+                                size : 2});
+    opcodes.insert(0x39, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::ABSY,
+                                cycles : 3,
+                                size : 4});
+    opcodes.insert(0x3D, Opcode{instruction : CPU::AND,
+                                addressing_mode : CPU::ABSX,
+                                cycles : 3,
+                                size : 4});
+    opcodes.insert(0x3E, Opcode{instruction : CPU::ROL,
+                                addressing_mode : CPU::ABSX,
+                                cycles : 3,
+                                size : 7});
+
+
     return opcodes;
 
 }
@@ -62,6 +197,7 @@ impl CPU {
     fn ZP() {}
     fn ZPX() {}
     fn ZPY() {}
+    fn ABS() {}
     fn ABSX() {}
     fn ABSY() {}
     fn Implied() {}
@@ -144,5 +280,11 @@ impl Bus {
 }
 
 fn main() {
+    let mut map : HashMap<u16, Opcode>;
+    map = gen_opcodes();
 
+    for (value, opcode) in &map {
+        (opcode.instruction)();
+        (opcode.addressing_mode)();
+    }
 }
