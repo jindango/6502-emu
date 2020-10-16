@@ -266,6 +266,74 @@ fn gen_opcodes() -> HashMap<u16, Opcode> {
                                 addressing_mode : CPU::ABS,
                                 size : 3,
                                 cycles : 6});
+    opcodes.insert(0x70, Opcode{instruction : CPU::BVS,
+                                addressing_mode : CPU::Relative,
+                                size : 2,
+                                cycles : 2});
+    opcodes.insert(0x71, Opcode{instruction : CPU::ADC,
+                                addressing_mode : CPU::INDY,
+                                size : 2,
+                                cycles : 5});
+    opcodes.insert(0x75, Opcode{instruction : CPU::ADC,
+                                addressing_mode : CPU::ZPX,
+                                size : 2,
+                                cycles : 4});
+    opcodes.insert(0x76, Opcode{instruction : CPU::ROR,
+                                addressing_mode : CPU::ZPX,
+                                size : 2,
+                                cycles : 6});
+    opcodes.insert(0x78, Opcode{instruction : CPU::SEI,
+                                addressing_mode : CPU::Implied,
+                                size : 1,
+                                cycles : 2});
+    opcodes.insert(0x79, Opcode{instruction : CPU::ADC,
+                                addressing_mode : CPU::ABSY,
+                                size : 3,
+                                cycles : 4});
+    opcodes.insert(0x7D, Opcode{instruction : CPU::ADC,
+                                addressing_mode : CPU::ABSX,
+                                size : 3,
+                                cycles : 4});
+    opcodes.insert(0x7E, Opcode{instruction : CPU::ROR,
+                                addressing_mode : CPU::ABSX,
+                                size : 3,
+                                cycles : 7});
+    opcodes.insert(0x81, Opcode{instruction : CPU::STA,
+                                addressing_mode : CPU::INDX,
+                                size : 2,
+                                cycles : 6});
+    opcodes.insert(0x84, Opcode{instruction : CPU::STY,
+                                addressing_mode : CPU::ZP,
+                                size : 2,
+                                cycles : 3});
+    opcodes.insert(0x85, Opcode{instruction : CPU::STA,
+                                addressing_mode : CPU::ZP,
+                                size : 2,
+                                cycles : 3});
+    opcodes.insert(0x86, Opcode{instruction : CPU::STX,
+                                addressing_mode : CPU::ZP,
+                                size : 2,
+                                cycles : 3});
+    opcodes.insert(0x88, Opcode{instruction : CPU::DEY,
+                                addressing_mode : CPU::Implied,
+                                size : 1,
+                                cycles : 2});
+    opcodes.insert(0x8A, Opcode{instruction : CPU::TXA,
+                                addressing_mode : CPU::Implied,
+                                size : 1,
+                                cycles : 2});
+    opcodes.insert(0x8C, Opcode{instruction : CPU::STY,
+                                addressing_mode : CPU::ABS,
+                                size : 3,
+                                cycles : 4});
+    opcodes.insert(0x8D, Opcode{instruction : CPU::STA,
+                                addressing_mode : CPU::ABS,
+                                size : 3,
+                                cycles : 4});
+    opcodes.insert(0x8E, Opcode{instruction : CPU::STX,
+                                addressing_mode : CPU::ABS,
+                                size : 3,
+                                cycles : 4});
 
     return opcodes;
 
@@ -329,6 +397,7 @@ impl CPU {
     fn BPL() {}
     fn BRK() {}
     fn BVC() {}
+    fn BVS() {}
     fn CLC() {}
     fn CLD() {}
     fn CLI() {}
@@ -371,6 +440,7 @@ impl CPU {
     fn TXS() {}
     fn TYA() {}
     fn PLP() {}
+    fn PLA() {}
 
     fn clock (&self) { 
 
